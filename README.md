@@ -143,34 +143,44 @@ This step generates a file named TS.json
 ```
 python3 generate_Pada_json.py inputs/*Pada*.docx
 ```
-This step generates a file named TS_withPada.json # Install the package python-docx na jinja2
-# pip install python-docx jinja2
+This step generates a file named TS_withPada.json 
+
+# Install the package python-docx na jinja2
+# pip install requirements.txt
     
 # Install the Adishila Vedic fonts (https://adishila.org)
-# Installed the tool indic_transliteration by following the instructions in
+# Install the texlive package using apt-get install commands
+# Install the tool indic_transliteration by following the instructions in
 # https://github.com/indic-transliteration/indic_transliteration_py/tree/master
-# This seems to work on Python 3.9 and above . Does not work on Python 3.8
-# Specifically
-# sudo pip install indic_transliteration -U
-# sudo pip install git+https://github.com/indic-transliteration/indic_transliteration_py/@master -U
-#
-# Modify the files after installation 
-# File 1: site-packages/indic_transliteration/sanscript/schemes/roman.py
-# Add the following as Line 27
-# BARAHA = 'baraha'
-# File 2: site-packages/indic_transliteration/sanscript/schemes/data/roman/baraha.toml
-#
-# Remove the lines for symbols 0 - 9 . (Remove 10 lines after Line 73 )
 
-# Remove the line 115 of "." producing | 
-#"|" = [ ".",]
-# Add the Alternative (gm) for (gg) as Line 117 
-#"(gg)" = ["(gm)",]
-    
-# File 3: site-packages/indic_transliteration/sanscript/__init__.py
-# Add the following line as Line 101  
-# BARAHA = roman.BARAHA  
-    
+  * This seems to work on Python 3.9 and above . Does not work on Python 3.8
+  * Specifically
+  * sudo pip install indic_transliteration -U
+  * sudo pip install git+https://github.com/indic-transliteration/indic_transliteration_py/@master -U
+  *
+  * Modify the files after installation 
+  # File 1: site-packages/indic_transliteration/sanscript/schemes/roman.py
+  * Add the following as Line 27
+  ```
+   BARAHA = 'baraha'
+  ``` 
+  # File 2: site-packages/indic_transliteration/sanscript/schemes/data/roman/baraha.toml
+  *
+  * Remove the lines for symbols 0 - 9 . (Remove 10 lines after Line 73 )
+
+  * Remove the line 115 of "." producing | 
+  ```
+  "|" = [ ".",]
+  ```
+  * Add the Alternative (gm) for (gg) as Line 117 
+  ```
+  "(gg)" = ["(gm)",]
+  ```    
+  # File 3: site-packages/indic_transliteration/sanscript/__init__.py
+  * Add the following line as Line 101  
+  ```
+   BARAHA = roman.BARAHA  
+  ```  
  Implementation notes 
     1. The code for detecting English words does not work reliably since
     we cannot get a hashmap of words and the logic of detecting English properly

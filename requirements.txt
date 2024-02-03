@@ -1,3 +1,5 @@
 indic-transliteration
 Jinja2
 python-docx
+beautifulsoup4
+pyparsing

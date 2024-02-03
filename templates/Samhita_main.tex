@@ -1,0 +1,64 @@
+\documentclass[12pt]{article}
+\usepackage{babel}
+\usepackage{fontspec}
+\usepackage{polyglossia}
+
+
+\setmainlanguage{sanskrit}
+\setotherlanguages{english} %% or other languages
+\setlength{\parindent}{0pt}
+\pagestyle{myheadings}
+\markright{कृष्ण यजुर्वेदीय तैत्तिरीय संहितायं प्रथमकाण्डे प्रथमप्रश्न\hfill Version1.0\hfill}
+\newfontfamily\devanagarifont[Script=Devanagari]{AdishilaVedic}
+
+\newcommand{\VAR}[1]{}
+\newcommand{\BLOCK}[1]{}
+
+
+
+
+\begin{document}
+\begin{titlepage}
+    \begin{center}
+ 
+\begin{sanskrit}
+    { \Large
+    \VAR{invocation} 
+    }
+    \\
+    \vspace{2.5cm}
+    \mbox{ \Huge
+    \VAR{title}   }
+\end{sanskrit}
+\end{center}
+
+\end{titlepage}
+\tableofcontents
+
+\VAR{invocation} \newline
+\VAR{title} \newline
+\BLOCK{for prasna in kanda['Prasna']}
+     \addcontentsline{toc}{section}{ \VAR{ prasna['section'].strip() }}
+     \markright{ \VAR{ prasna['section'].strip()} \hfill https://www.vedavms.in \hfill}
+     \section*{ \VAR{ prasna['section'].strip()} }
+        \BLOCK{ for anuvakkam in prasna['Anuvakkam']}
+              \BLOCK{ for panchasat in anuvakkam['Panchasat']}
+                  \textbf{ \VAR{ panchasat['header'].strip()}} \newline
+                  \VAR{ panchasat['SamhitaPaata'].strip() } \textbf{ \VAR{ panchasat['panchasatInfo']}} \newline
+                  \newline
+              \BLOCK{endfor}
+        \VAR{ anuvakkam['KorvaiInfo']} \textbf{\VAR{ anuvakkam['anuvakkamInfo']}} \newline
+        \BLOCK{endfor}
+        \textbf{\VAR{ prasna['PrasnaKorvai_header'].strip()}} \newline
+        \VAR{prasna['PrasnaKorvai_Sloka'].strip()} \newline \newline
+
+        \textbf{\VAR{ prasna['Korvai_header'].strip()}} \newline
+        \VAR{ prasna['Korvai_Sloka'].strip()} \newline \newline
+
+        \textbf{\VAR{ prasna['firstLastPadams_header'].strip()}} \newline
+        \VAR{ prasna['firstLastPadams_Sloka'].strip()} \newline \newline
+        \pagebreak
+\BLOCK{ endfor }
+
+\end{document}
+

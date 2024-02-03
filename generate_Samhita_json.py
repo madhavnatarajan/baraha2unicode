@@ -66,6 +66,8 @@ def titleLine_Action(tokens):
     for t in tokens:
         lines +=(str)(t)
     outputString=transliterate(lines,sanscript.BARAHA, sanscript.DEVANAGARI)
+    #outputString=transliterate(lines,sanscript.BARAHA, sanscript.TAMIL)
+
     global_identifier["title_temp"]=outputString
     #print("title Section")
     #MYGLOBAL.append("Title")
@@ -78,6 +80,7 @@ def sectiontitleLine_Action(tokens):
     for t in tokens:
         lines +=(str)(t)
     outputString=transliterate(lines,sanscript.BARAHA, sanscript.DEVANAGARI)
+    #outputString=transliterate(lines,sanscript.BARAHA, sanscript.TAMIL)
     #print("##",outputString,"##")
     global_identifier["sectionTitle_temp"]=outputString
     return outputString
@@ -89,6 +92,8 @@ def invocationLine_Action(tokens):
     for t in tokens:
         lines +=(str)(t)
     outputString=transliterate(lines,sanscript.BARAHA, sanscript.DEVANAGARI)
+    #outputString=transliterate(lines,sanscript.BARAHA, sanscript.TAMIL)
+
     global_identifier["invocation_temp"] = outputString
     return outputString
 
@@ -108,9 +113,12 @@ def remainingLines_Action(tokens):
     panchasatInfo=global_identifier.get("Panchasat")
     tokenLength = len(tokens)
     foundAnnexure=False
-    parseTree["TS"]["Kanda"][kandaInfo-1]["Prasna"][prasnaInfo-1]["Appendix"]=""
+    temp_AppendixNode=""
+    #parseTree["TS"]["Kanda"][kandaInfo-1]["Prasna"][prasnaInfo-1]["Appendix"]=""
     if (len(tokens) >=3):
         lines += transliterate((str)(tokens[0]),sanscript.BARAHA, sanscript.DEVANAGARI)
+        #lines += transliterate((str)(tokens[0]),sanscript.BARAHA, sanscript.TAMIL)
+
         #lines += transliterate((str)(tokens[1]),sanscript.BARAHA, sanscript.DEVANAGARI)
         parseTree["TS"]["Kanda"][kandaInfo-1]["Prasna"][prasnaInfo-1]["ending"] = lines
         for t in tokens[2]:
@@ -124,25 +132,36 @@ def remainingLines_Action(tokens):
                 foundAnnexure=True
                 if EnglishPattern2Result:
                     mystr1 = transliterate(EnglishPattern2Result.group(1),sanscript.BARAHA, sanscript.DEVANAGARI)
+                    #mystr1 = transliterate(EnglishPattern2Result.group(1),sanscript.BARAHA, sanscript.TAMIL)
+
                     #print(mystr1,file=sys.stderr)
                     mystr2=EnglishPattern2Result.group(2)
                     mystr3 = transliterate(EnglishPattern2Result.group(3),sanscript.BARAHA, sanscript.DEVANAGARI)
+                    #mystr3 = transliterate(EnglishPattern2Result.group(3),sanscript.BARAHA, sanscript.TAMIL)
+
                     mystr = mystr1 + mystr2 + mystr3
                     #print ("###",mystr,"###",file=sys.stderr)
-                parseTree["TS"]["Kanda"][kandaInfo-1]["Prasna"][prasnaInfo-1]["Appendix"]+=mystr
+                #parseTree["TS"]["Kanda"][kandaInfo-1]["Prasna"][prasnaInfo-1]["Appendix"]+=mystr
+                temp_AppendixNode+=mystr
                 lines1 +=mystr
             else:
                 
                 x =transliterate(mystr, sanscript.BARAHA, sanscript.DEVANAGARI)
+                #x =transliterate(mystr, sanscript.BARAHA, sanscript.TAMIL)
+
                 lines1+=x
                 if foundAnnexure:
-                    parseTree["TS"]["Kanda"][kandaInfo-1]["Prasna"][prasnaInfo-1]["Appendix"] += x
+                    #parseTree["TS"]["Kanda"][kandaInfo-1]["Prasna"][prasnaInfo-1]["Appendix"] += x
+                    temp_AppendixNode+=x
                 else:
                     parseTree["TS"]["Kanda"][kandaInfo-1]["Prasna"][prasnaInfo-1]["ending"] += x
     #x = transliterate(lines, sanscript.BARAHA, sanscript.DEVANAGARI)
     #parseTree["TS"]["Kanda"][kandaInfo-1]["Prasna"][prasnaInfo-1]["Appendix"] = lines1
+    if foundAnnexure:
+        parseTree["TS"]["Kanda"][kandaInfo-1]["Prasna"][prasnaInfo-1]["Appendix"] = temp_AppendixNode
     outputString=lines +lines1
     return outputString
+
 def kandaKorvaiLines_Action(tokens):
     print("kandaKorvaiLines_Action ",tokens,file=sys.stderr)
     kandaInfo=global_identifier.get("Kanda")
@@ -157,6 +176,8 @@ def kandaKorvaiLines_Action(tokens):
         for s in tokens[1][1:]:
             lines+=s+"\n"
         x = transliterate(lines, sanscript.BARAHA, sanscript.DEVANAGARI)
+        #x = transliterate(lines, sanscript.BARAHA, sanscript.TAMIL)
+
         outputString=header + "\n" + x
         parseTree["TS"]["Kanda"][kandaInfo-1]["Prasna"][prasnaInfo-1]["kandaKorvai_Sloka"] = x
         parseTree["TS"]["Kanda"][kandaInfo-1]["Prasna"][prasnaInfo-1]["kandaKorvai_header"] = header
@@ -181,6 +202,8 @@ def samhitaKorvaiLines_Action(tokens):
         for s in tokens[1][1:]:
             lines+=s+"\n"
         x = transliterate(lines, sanscript.BARAHA, sanscript.DEVANAGARI)
+        #x = transliterate(lines, sanscript.BARAHA, sanscript.TAMIL)
+
         outputString=header + "\n" + x
         parseTree["TS"]["Kanda"][kandaInfo-1]["samhitaKorvai_Sloka"] = x
         parseTree["TS"]["Kanda"][kandaInfo-1]["samhitaKorvai_header"] = header
@@ -205,6 +228,8 @@ def specialKorvaiLines_Action(tokens):
         for s in tokens[1][1:]:
             lines+=s+"\n"
         x = transliterate(lines, sanscript.BARAHA, sanscript.DEVANAGARI)
+        #x = transliterate(lines, sanscript.BARAHA, sanscript.TAMIL)
+
         outputString=header + "\n" + x
         parseTree["TS"]["Kanda"][kandaInfo-1]["Prasna"][prasnaInfo-1]["specialKorvai_Sloka"] = x
         parseTree["TS"]["Kanda"][kandaInfo-1]["Prasna"][prasnaInfo-1]["specialKorvai_header"] = header
@@ -231,6 +256,8 @@ def firstLastPadamsLines_Action(tokens):
             lines+=s
             
         x = transliterate(lines, sanscript.BARAHA, sanscript.DEVANAGARI)
+        #x = transliterate(lines, sanscript.BARAHA, sanscript.TAMIL)
+
         outputString=header + "\n" + x
         parseTree["TS"]["Kanda"][kandaInfo-1]["Prasna"][prasnaInfo-1]["firstLastPadams_Sloka"] = x
         parseTree["TS"]["Kanda"][kandaInfo-1]["Prasna"][prasnaInfo-1]["firstLastPadams_header"] = header
@@ -256,6 +283,8 @@ def korvaiLines_Action(tokens):
         for s in tokens[1][1:]:
             lines+=s+"\n"
         x = transliterate(lines, sanscript.BARAHA, sanscript.DEVANAGARI)
+        #x = transliterate(lines, sanscript.BARAHA, sanscript.TAMIL)
+
         outputString=header + "\n" + x
         parseTree["TS"]["Kanda"][kandaInfo-1]["Prasna"][prasnaInfo-1]["Korvai_Sloka"] = x
         parseTree["TS"]["Kanda"][kandaInfo-1]["Prasna"][prasnaInfo-1]["Korvai_header"] = header
@@ -281,6 +310,8 @@ def prasnaKorvaiLines_Action(tokens):
         for s in tokens[1][1:]:
             lines+=s+"\n"
         x = transliterate(lines, sanscript.BARAHA, sanscript.DEVANAGARI)
+        #x = transliterate(lines, sanscript.BARAHA, sanscript.TAMIL)
+
         outputString=header + "\n" + x
         parseTree["TS"]["Kanda"][kandaInfo-1]["Prasna"][prasnaInfo-1]["PrasnaKorvai_Sloka"] = x
         parseTree["TS"]["Kanda"][kandaInfo-1]["Prasna"][prasnaInfo-1]["PrasnaKorvai_header"] = header
@@ -396,6 +427,8 @@ def prasnaLines_Action(tokens):
             elif anuvakkamResult:
                 #print("new Anuvaka",anuvakkamResult.group(1))
                 x = transliterate(anuvakkamResult.group(1), sanscript.BARAHA, sanscript.DEVANAGARI)
+                #x = transliterate(anuvakkamResult.group(1), sanscript.BARAHA, sanscript.TAMIL)
+
                 parseTree["TS"]["Kanda"][kandaInfo-1]["Prasna"][prasnaInfo-1]["Anuvakkam"][anuvakkamInfo-1]["KorvaiInfo"]=x
                 
                 outputString+=x 
@@ -405,6 +438,8 @@ def prasnaLines_Action(tokens):
             elif panchasatResult:
                 #print("Panchasat-1","2- ",panchasatResult.group(2), " 3- ",panchasatResult.group(3),file=sys.stderr)
                 x = transliterate(panchasatResult.group(1), sanscript.BARAHA, sanscript.DEVANAGARI)
+                #x = transliterate(panchasatResult.group(1), sanscript.BARAHA, sanscript.TAMIL)
+
                 #print(x)
                 #print("kandaInfo: ",kandaInfo, " prasnaInfo: ",prasnaInfo," anuvakkamInfo: ",anuvakkamInfo," panchasatInfo: ",panchasatInfo) 
                       
@@ -427,6 +462,8 @@ def prasnaLines_Action(tokens):
                 #print("Panchasat-2",panchasatResult, line,file=sys.stderr)
                 if (len(line) >0):
                     x = transliterate(line, sanscript.BARAHA, sanscript.DEVANAGARI)
+                    #x = transliterate(line, sanscript.BARAHA, sanscript.TAMIL)
+
                     if (inSpecialKorvai):
                         #print("Special Korvai-2",line,global_identifier,file=sys.stderr)
                         specialKorvai_Sloka+=x

@@ -365,6 +365,34 @@ def generateMarkup (document, DocfamilyName,documentType):
                 TS_TEXT=""
             #print("paragraph has zero words ")            
 
+''' 
+The different node types are
+1. Krama , Pada, Jatai, Samhita . They have an attribute of title ( State - 1 TS_NODE)
+2. Appendix has attribute of children and attribute of type title (State -2 TS_APPENDIX )( Typically Appendix has children of type paragraph)
+3. English preface  ( State 4 TS_PREFACE)
+4. Pagebreak ( State 6 - PAGEBREAK)
+5. Korvai ( State 3 TS_KORVAI)
+6. Paragraph ( State 5 - TS_PARA )
+
+'''
+# this
+def prepDocument(document,DocfamilyName,documentType):
+    TS_NODE=TS_APPENDIX=TS_KORVAI=TS_PREFACE=TS_PARA=PARAGRAPH=False
+    text=""
+    all_paras = document.paragraphs
+    for para in all_paras:
+        data=para.text
+        words=data.split()
+        if (len(words) >0):
+            # Do X
+            if (words[0].lower() == "notes"):
+                TS_PREFACE = True
+                print("Found notes",data)
+        else:
+            pass
+            # Break states
+        text+=data
+    return text
 ## Main Program starts here     
 
 
@@ -395,10 +423,13 @@ if len(sys.argv) >2 :
     documentType = sys.argv[2]      
 document = Document (file_name)
 # Define the sets of files being operated and the directories
-baseName = os.path.basename(file_name)
+baseName = os.path.basename(file_name).replace(".docx","")
+
 # Replace space and strip and take the first part before dot
-DocfamilyName=baseName.strip().replace(" ","_").split(".")[0]
+#DocfamilyName=baseName.strip().replace(" ","_").split(".")[0]
+DocfamilyName=baseName.replace(" ","_").replace(".","_")
 print(DocfamilyName,documentType)
-generatePdf(document,DocfamilyName)
-generateMarkup(document,DocfamilyName,documentType)
+prepDocument(document,DocfamilyName,documentType)
+#generatePdf(document,DocfamilyName)
+#generateMarkup(document,DocfamilyName,documentType)
 

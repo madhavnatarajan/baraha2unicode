@@ -13,6 +13,31 @@ import json
 '''
 Bug : Need to add the english prefix into the json tree
 '''
+def CreateMd (templateFileName,name,DocfamilyName,data):
+    outputdir="outputs/md"
+    logdir="logs"
+    latex_jinja_env = jinja2.Environment(
+        block_start_string = '\BLOCK{',
+        block_end_string = '}',
+        variable_start_string = '\VAR{',
+        variable_end_string = '}',
+        comment_start_string = '\#{',
+        comment_end_string = '}',
+        line_statement_prefix = '%-',
+        line_comment_prefix = '%#',
+        trim_blocks = True,
+        autoescape = False,
+        loader = jinja2.FileSystemLoader(os.path.abspath('.'))
+    )
+    mdFileName=f"{outputdir}/{name}_{DocfamilyName}_Unicode.md"
+    
+    template = latex_jinja_env.get_template(templateFileName)
+    if DocfamilyName == "Samhita":
+        document = template.render(kanda=data,invocation=invocation,title=title)
+    elif DocfamilyName == "Pada":
+        document = template.render(prasna=data,invocation=invocation,title=title)
+    with open(mdFileName,"w") as f:
+        f.write(document)
 
 def CreatePdf (templateFileName,name,DocfamilyName,data):
     outputdir="outputs"
@@ -108,6 +133,9 @@ parseTree = json.loads(ts_string)
 DocfamilyName="Samhita"
 samhitaTemplateFile=f"templates/{DocfamilyName}_main.tex"
 padaTemplateFile="templates/Pada_main.tex"
+
+samhita_md_TemplateFile=f"templates/{DocfamilyName}_main.md"
+pada_md_TemplateFile="templates/Pada_main.md"
 beginningTemplateFile=f"templates/{DocfamilyName}_title.tex"
 endingTemplateFile=f"templates/{DocfamilyName}_end.tex"
 
@@ -140,6 +168,7 @@ for kanda in parseTree['TS']['Kanda']:
     for prasna in kanda['Prasna']:
         prasnaInfo=prasna['id']
         CreatePdf(padaTemplateFile,f"TS_{kandaInfo}_{prasnaInfo}","Pada",prasna)
+        CreateMd(pada_md_TemplateFile,f"TS_{kandaInfo}_{prasnaInfo}","Pada",prasna)
         for anuvakkam in prasna['Anuvakkam']:
             for panchasat in anuvakkam['Panchasat']:
                 #print("Panchasat ",panchasat)
@@ -147,6 +176,7 @@ for kanda in parseTree['TS']['Kanda']:
 
     #document = template.render(kanda=kanda,invocation=invocation,title=title)
     CreatePdf(samhitaTemplateFile,f"TS_{kandaInfo}",DocfamilyName,kanda)
+    CreateMd(samhita_md_TemplateFile,f"TS_{kandaInfo}",DocfamilyName,kanda)
 
     
 

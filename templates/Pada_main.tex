@@ -1,0 +1,78 @@
+\documentclass[17pt]{extarticle}
+\usepackage{babel}
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\usepackage{extsizes}
+
+
+
+\setmainlanguage{sanskrit}
+\setotherlanguages{english} %% or other languages
+\setlength{\parindent}{0pt}
+\pagestyle{myheadings}
+\newfontfamily\devanagarifont[Script=Devanagari]{AdishilaVedic}
+
+
+\newcommand{\VAR}[1]{}
+\newcommand{\BLOCK}[1]{}
+
+
+
+
+\begin{document}
+\begin{titlepage}
+    \begin{center}
+ 
+\begin{sanskrit}
+    { \Large
+    \VAR{invocation} 
+    }
+    \\
+    \vspace{2.5cm}
+    \mbox{ \Huge
+    \VAR{ prasna['section'].strip() }   }
+\end{sanskrit}
+\end{center}
+
+\end{titlepage}
+\tableofcontents
+
+\VAR{prasna['invocation'].strip()} \newline
+\VAR{prasna['section'].strip()} \newline
+
+\addcontentsline{toc}{section}{ \VAR{ prasna['section'].strip() }}
+\markright{ \VAR{ prasna['section'].strip()} \hfill https://www.vedavms.in \hfill}
+\section*{ \VAR{ prasna['section'].strip()} }
+\BLOCK{ for anuvakkam in prasna['Anuvakkam']}
+              \BLOCK{ for panchasat in anuvakkam['Panchasat']}
+                  \textbf{ \VAR{ panchasat['header'].strip()}} \newline
+                  \VAR{ panchasat['PadaPaata'].strip() } \textbf{ \VAR{ panchasat['panchasatInfo']}} \newline
+                  \newline
+              \BLOCK{endfor}
+        \VAR{ anuvakkam['KorvaiInfo']} \textbf{\VAR{ anuvakkam['anuvakkamInfo']}} \newline \newline
+\BLOCK{endfor}
+\textbf{\VAR{ prasna['PrasnaKorvai_header'].strip()}} \newline
+\VAR{prasna['PrasnaKorvai_Sloka'].replace("\n","").strip()} \newline
+
+\textbf{\VAR{ prasna['Korvai_header'].strip()}} \newline
+\VAR{ prasna['Korvai_Sloka'].replace("\n","").strip()} \newline
+
+\textbf{\VAR{ prasna['firstLastPadams_header'].strip()}} \newline
+\VAR{ prasna['firstLastPadams_Sloka'].strip()} \newline 
+
+\BLOCK{ if prasna.get("specialKorvai_header") }
+    \textbf{\VAR{ prasna['specialKorvai_header'].strip()}} \newline
+    \VAR{ prasna['specialKorvai_Sloka'].replace("\n","").strip()} \newline
+\BLOCK{ endif }
+
+\VAR{ prasna['ending'].strip() } \newline
+\pagebreak
+\BLOCK{ if prasna.get("Appendix") }
+\VAR{ prasna['Appendix'].replace("\n","\\\\").strip()}
+\BLOCK{ endif }
+\pagebreak
+        
+
+
+\end{document}
+

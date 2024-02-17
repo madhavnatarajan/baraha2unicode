@@ -29,13 +29,21 @@ def CreateMd (templateFileName,name,DocfamilyName,data):
         autoescape = False,
         loader = jinja2.FileSystemLoader(os.path.abspath('.'))
     )
-    mdFileName=f"{outputdir}/{name}_{DocfamilyName}_Unicode.md"
+    #mdFileName=f"{outputdir}/{name}_{DocfamilyName}_Unicode.md"
     
     template = latex_jinja_env.get_template(templateFileName)
     if DocfamilyName == "Samhita":
+        outputdir="outputs/md/Samhita"
+        mdFileName=f"{outputdir}/{name}_{DocfamilyName}_Unicode.md"
         document = template.render(kanda=data,invocation=invocation,title=title)
     elif DocfamilyName == "Pada":
+        outputdir="outputs/md/Pada"
+        mdFileName=f"{outputdir}/{name}_{DocfamilyName}_Unicode.md"
         document = template.render(prasna=data,invocation=invocation,title=title)
+    elif DocfamilyName == "Aaranyaka":
+        outputdir="outputs/md/Aaranyaka"
+        mdFileName=f"{outputdir}/{name}_{DocfamilyName}_Unicode.md"
+        document = template.render(prapaataka=data,invocation=invocation,title=title)
     with open(mdFileName,"w") as f:
         f.write(document)
 
@@ -61,9 +69,14 @@ def CreatePdf (templateFileName,name,DocfamilyName,data):
     LogFileName=f"{name}_{DocfamilyName}_Unicode.log"
     template = latex_jinja_env.get_template(templateFileName)
     if DocfamilyName == "Samhita":
+        outputdir="outputs/pdf/Samhita"
         document = template.render(kanda=data,invocation=invocation,title=title)
     elif DocfamilyName == "Pada":
+        outputdir="outputs/pdf/Pada"
         document = template.render(prasna=data,invocation=invocation,title=title)
+    elif DocfamilyName == "Aaranyaka":
+        outputdir="outputs/pdf/Aaranyaka"
+        document = template.render(prapaataka=data,invocation=invocation,title=title)
     tmpdirname="."
     with tempfile.TemporaryDirectory() as tmpdirname:
         tmpfilename=f"{tmpdirname}/{TexFileName}"
@@ -133,9 +146,12 @@ parseTree = json.loads(ts_string)
 DocfamilyName="Samhita"
 samhitaTemplateFile=f"templates/{DocfamilyName}_main.tex"
 padaTemplateFile="templates/Pada_main.tex"
+aaranyakaTemplateFile="templates/Aaranyaka_main.tex"
 
 samhita_md_TemplateFile=f"templates/{DocfamilyName}_main.md"
 pada_md_TemplateFile="templates/Pada_main.md"
+aaranyaka_md_TemplateFile="templates/Aaranyaka_main.md"
+
 beginningTemplateFile=f"templates/{DocfamilyName}_title.tex"
 endingTemplateFile=f"templates/{DocfamilyName}_end.tex"
 
@@ -178,6 +194,17 @@ for kanda in parseTree['TS']['Kanda']:
     CreatePdf(samhitaTemplateFile,f"TS_{kandaInfo}",DocfamilyName,kanda)
     CreateMd(samhita_md_TemplateFile,f"TS_{kandaInfo}",DocfamilyName,kanda)
 
+ts_string = Path("TA.json").read_text(encoding="utf-8")
+parseTree = json.loads(ts_string)
+for prapaataka in parseTree['TA']['Prapaataka']:
+    invocation=prapaataka['invocation'].strip()
+    #invocation=invocation.replace("\n","\\\\")
+    prapaatakaInfo=prapaataka['id']
+    title=prapaataka['title']
+    #print(title)
+    CreatePdf(aaranyakaTemplateFile,f"TA_{prapaatakaInfo}","Aaranyaka",prapaataka)
+    CreateMd(aaranyaka_md_TemplateFile,f"TA_{prapaatakaInfo}","Aaranyaka",prapaataka)
+    #document = template.render(prapaataka=prapaataka,invocation=invocation,title=title
     
 
 #return exit_code

@@ -1,0 +1,86 @@
+\documentclass[17pt]{extarticle}
+\usepackage{babel}
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\usepackage{extsizes}
+
+
+
+\setmainlanguage{sanskrit}
+\setotherlanguages{english} %% or other languages
+\setlength{\parindent}{0pt}
+\pagestyle{myheadings}
+\newfontfamily\devanagarifont[Script=Devanagari]{AdishilaVedic}
+
+
+\newcommand{\VAR}[1]{}
+\newcommand{\BLOCK}[1]{}
+
+
+
+
+\begin{document}
+\begin{titlepage}
+    \begin{center}
+ 
+\begin{sanskrit}
+    { \Large
+    \VAR{prapaataka['invocation'].strip()} 
+    }
+    \\
+    \vspace{2.5cm}
+    \mbox{ \Huge
+    \VAR{ prapaataka['title'].strip() }   }
+\end{sanskrit}
+\end{center}
+
+\end{titlepage}
+\tableofcontents
+
+\VAR{prapaataka['invocation'].strip()} \newline
+\VAR{prapaataka['sectionTitle'].strip()} \newline
+
+\addcontentsline{toc}{section}{ \VAR{ prapaataka['sectionTitle'].strip() }}
+\markright{ \VAR{ prapaataka['sectionTitle'].strip()} \hfill https://www.vedavms.in \hfill}
+\section*{ \VAR{ prapaataka['sectionTitle'].strip()} }
+\BLOCK{ for anuvakkam in prapaataka['Anuvakkam']}
+              \BLOCK{ for panchasat in anuvakkam['Panchasat']}
+                  \textbf{ \VAR{ panchasat['header'].strip()}} \newline
+                  \VAR{ panchasat['SamhitaPaata'].strip() } \textbf{ \VAR{ panchasat['id']}} \newline
+                  \newline
+                  \BLOCK{ if panchasat.get("upaPanchasat") }
+                  \textbf{ \VAR{ panchasat['UpaPanchasat']['header'].strip()}} \newline
+                  \VAR{ panchasat['upaPanchasat']['SamhitaPaata'].replace("\n","").strip()} \newline
+                  \BLOCK{ endif }
+                \BLOCK{ if panchasat.get("specialKorvai") }
+                
+                \VAR{ panchasat['specialKorvai'].replace("\n","").strip()} \newline
+                \BLOCK{ endif }
+              \BLOCK{endfor}
+        \VAR{ anuvakkam['Korvai']} \textbf{\VAR{ anuvakkam['anuvakkam_id']}} \newline \newline
+\BLOCK{endfor}
+\textbf{\VAR{ prapaataka['PrasnaKorvai_header'].strip()}} \newline
+\VAR{prapaataka['PrasnaKorvai_Sloka'].replace("\n","").strip()} \newline
+
+\textbf{\VAR{ prapaataka['Korvai_header'].strip()}} \newline
+\VAR{ prapaataka['Korvai_Sloka'].replace("\n","").strip()} \newline
+
+\textbf{\VAR{ prapaataka['firstLastPadams_header'].strip()}} \newline
+\VAR{ prapaataka['firstLastPadams_Sloka'].strip()} \newline 
+
+\BLOCK{ if prapaataka.get("specialKorvai") }
+    
+    \VAR{ prapaataka['specialKorvai'].replace("\n","").strip()} \newline
+\BLOCK{ endif }
+
+\VAR{ prapaataka['ending'].strip() } \newline
+\pagebreak
+\BLOCK{ if prapaataka.get("Appendix") }
+\VAR{ prapaataka['Appendix'].replace("\n","\\\\").strip()}
+\BLOCK{ endif }
+\pagebreak
+        
+
+
+\end{document}
+

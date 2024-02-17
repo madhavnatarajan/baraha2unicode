@@ -76,7 +76,7 @@ This document lists the steps that are followed . The goals of this exercise are
 ```
 mkdir inputs
 cd inputs
-python3 ../fetch.py > fetch.sh
+python3 ../fetchBaraha_FromVedaVMS.py > fetch.sh
 bash fetch.sh
 cd ..
 mkdir orig
@@ -87,7 +87,7 @@ python3 ../doc2txt.py *.docx
 ```
 The files have already been modified and checked in. These changes can be incorporated into the original files also .
 
-There are 9 changes to be done across 7 files . 
+There are 9 changes to be done across 7 files . for the Samhita and Pada Paada files. There are many changes in the Aaranyaka files. 
  * TS 1 Baraha.docx
 ```
 
@@ -171,18 +171,45 @@ There are 9 changes to be done across 7 files .
 ```
 python3 generate_Samhita_json.py inputs/TS\ 1\ Baraha.docx inputs/TS\ 2\ Baraha.docx inputs/TS\ 3\ Baraha.docx inputs/TS\ 4\ Baraha.docx inputs/TS\ 5\ Baraha.docx inputs/TS\ 6\ Baraha.docx inputs/TS\ 7\ Baraha.docx
 ```
-This step generates a file named TS.json
+This step generates a file named ***TS.json***
 ### Step 3b Augument the json files with the Pada Paata ###
 
 ```
 python3 generate_Pada_json.py inputs/*Pada*.docx
 ```
-This step generates a file named  TS_withPada.json 
+This step generates a file named  ***TS_withPada.json*** 
 
+### Step 3c Augument the json files with the Sayana Bhashya ###
 
+```
+python3 generate_SayanaBhashya_json.py inputs/KY_Sayana_Kanda1.docx inputs/KY_Sayana_Kanda2.docx inputs/KY_Sayana_Kanda3.docx > x.txt
+```
+This step generates a file named ***TS_withSayanaBhashya.json***
+
+### Step 3d Augument the json files with the Bhatta Bhaskara Bhashya ###
   
- Implementation notes 
-    
+```
+python3 generate_BhattaBhashya_json.py inputs/KrshnYjrv_BhattaBhaskaraBhashya.docx >x.txt
+```
+
+This step generates a file named ***TS_withBhattaBhashya.json***
+
+### Step 3e Generate the json files with the Taittriya Aaranyaka ###
+
+``` 
+python3 generate_TA_json.py inputs/TA\ 1-4\ Baraha.docx inputs/TA\ 5-6\ Baraha.docx inputs/TA\ 7-8\ Baraha.docx >x.txt
+```
+This step generates a file called ***TA.json*** 
+
+### Step 3f Generate the PDF and the markdown files ###
+
+```
+python3 generatePDF.py
+```
+
+This step generates the files under the ***outputs/pdf*** and ***outputs/md*** directory . There are subdirectories created named _Samhita_ , _Pada_ , and _Aaranyaka_ respectively
+
+Implementation notes
 
 *. The pdflatex engine did not work for multi language files. So I used the polyglassia package of LaTex and that worked only with xelatex
 

@@ -26,7 +26,7 @@ _\VAR{prapaataka['invocation'].strip()}_
 \BLOCK{endfor}
 
 
-***(A\VAR{ anuvakkam['Korvai']} \textbf{\VAR{ anuvakkam['anuvakkam_id']}})***
+***\VAR{ anuvakkam['Korvai']} (A\VAR{ anuvakkam['anuvakkam_id']})***
 
 
 \BLOCK{endfor}

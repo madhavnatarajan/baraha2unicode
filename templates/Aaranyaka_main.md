@@ -7,12 +7,17 @@ _\VAR{prapaataka['invocation'].strip()}_
 
 \BLOCK{ for anuvakkam in prapaataka['Anuvakkam']}
 \BLOCK{ for panchasat in anuvakkam['Panchasat']}
-*** \VAR{ panchasat['header'].strip()} ***
+
+***\VAR{ panchasat['header'].strip()}***
+
+
 \VAR{ panchasat['SamhitaPaata'].strip() }  _\VAR{ panchasat['id']}_
 
 
 \BLOCK{ if panchasat.get("upaPanchasat") }
-*** \VAR{ panchasat['UpaPanchasat']['header'].strip()} ***
+
+***\VAR{ panchasat['UpaPanchasat']['header'].strip()}***
+
 \VAR{ panchasat['upaPanchasat']['SamhitaPaata'].replace("\n","").strip()} \newline
 \BLOCK{ endif }
                 
@@ -31,7 +36,7 @@ _\VAR{prapaataka['invocation'].strip()}_
 
 \BLOCK{endfor}
 
-*** \VAR{ prapaataka['PrasnaKorvai_header'].strip()} ***
+***\VAR{ prapaataka['PrasnaKorvai_header'].strip()}***
 
 
 \VAR{prapaataka['PrasnaKorvai_Sloka'].replace("\n","").strip()}
@@ -43,7 +48,7 @@ _\VAR{prapaataka['invocation'].strip()}_
 \VAR{ prapaataka['Korvai_Sloka'].replace("\n","").strip()}
 
 
-*** \VAR{ prapaataka['firstLastPadams_header'].strip()} ***
+***\VAR{ prapaataka['firstLastPadams_header'].strip()}***
 
 
 \VAR{ prapaataka['firstLastPadams_Sloka'].strip()}
